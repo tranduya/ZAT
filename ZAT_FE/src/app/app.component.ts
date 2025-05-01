@@ -26,7 +26,7 @@ export class AppComponent {
   ) { }
 
   ngOnInit() {
-    this.sidebarItems.push({ text: 'Přehled nosičů', path: 'prehled_nosicu', selected: false });
+    this.sidebarItems.push({ text: 'Přehled nosičů', path: '.', selected: false });
     this.sidebarItems.push({ text: 'Přehled vypůjček', path: 'prehled_vypujcek', selected: false });
     this.sidebarItems.push({ text: 'Správa uživatelů', path: 'sprava_uzivatelu', selected: false });
   }

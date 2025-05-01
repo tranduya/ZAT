@@ -55,7 +55,7 @@ import { NosiceComponent } from './nosice/nosice.component';
     HttpClientModule,
     RouterModule.forRoot([
       // { path: '', component: HomeComponent },
-      { path: 'prehled_nosicu', component: NosiceComponent},
+      { path: '', component: NosiceComponent},
       { path: 'prehled_vypujcek', component: VypujckyComponent},
       { path: 'sprava_uzivatelu', component: UserManagementComponent},
       { path: 'sprava_uzivatelu/novy_uzivatel', component: NewUserComponent},

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Role } from '../interface/role';
 import { UserService } from '../service/user.service';
 import { User } from '../interface/user';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,15 +16,9 @@ export class NewUserComponent {
     nickname: null,
     name: null,
     surname: null,
-    pwd: null,
-    confirmPwd: null,
     email: null,
     telephone: null,
-    selectedRole: 1
   }
-  isAuthorizated = false;
-
-  protected roles: Role[] = [];
 
   constructor(protected userService: UserService, 
     protected notificationService: NotificationService, protected router: Router,
@@ -35,8 +28,10 @@ export class NewUserComponent {
     this.userService.createUser(user).subscribe({
       next: () => {
         this.router.navigate([`/sprava_uzivatelu`]);
+        showNotification("Uživatel byl úspěšně uložen.", 'success', this.notificationService);
       },
       error: err => {
+        showNotification("Uživatel se nepovedl uložit.", 'error', this.notificationService);
       }
     })
   }
@@ -53,20 +48,19 @@ export class NewUserComponent {
     }
 
     if (
-      this.form.nickname == null ||
-      this.form.name == null ||
-      this.form.surname == null ||
-      this.form.pwd == null ||
-      this.form.confirmPwd == null ||
-      this.form.email == null ||
-      this.form.telephone == null
+      (this.form.nickname == null ||
+        this.form.name == null ||
+        this.form.surname == null ||
+        this.form.email == null ||
+        this.form.telephone == null)
+      ||
+      (this.form.nickname == "" ||
+        this.form.name == "" ||
+        this.form.surname == "" ||
+        this.form.email == "" ||
+        this.form.telephone == "")
     ) {
       showNotification('Všechna pole musí být vyplněna!','error', this.notificationService);
-      return false;
-    }
-
-    if (this.form.pwd != this.form.confirmPwd) {
-      showNotification('Hesla nejsou shodná!', 'error', this.notificationService);
       return false;
     }
 

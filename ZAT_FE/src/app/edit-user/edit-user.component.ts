@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NewUserComponent } from '../new-user/new-user.component';
 import { User } from '../interface/user';
+import { showNotification } from '../lib/notification';
 
 @Component({
   selector: 'app-edit-user',
@@ -15,6 +16,7 @@ export class EditUserComponent extends NewUserComponent{
     this.route.paramMap.subscribe(params => {
       let id = params.get('id');
       if (id != null) {
+        this.onGetUser(parseInt(id));
       }
     })
   }
@@ -30,8 +32,10 @@ export class EditUserComponent extends NewUserComponent{
     this.userService.updateUser(user, id).subscribe({
       next: () => {
         this.router.navigate([`/sprava_uzivatelu`]);
+        showNotification("Uživatel byl úspěšně uložen.", 'success', this.notificationService);
       },
       error: err => {
+        showNotification("Uživatel se nepovedl uložit.", 'error', this.notificationService);
       }
     })
   }

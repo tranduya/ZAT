@@ -18,30 +18,12 @@
                         <td class="td"><input type="text" id="surname" name="surname" [(ngModel)]="form.surname"/><br /></td>
                     </tr>
                     <tr>
-                        <td class="td">Heslo</td>
-                        <td class="td"><input type="password" id="pwd" name="pwd" [(ngModel)]="form.pwd"/><br /></td>
-                    </tr>
-                    <tr>
-                        <td class="td">Potvrzení hesla</td>
-                        <td class="td"><input type="password" id="confirmPwd" name="confirmPwd" [(ngModel)]="form.confirmPwd"/><br /></td>
-                    </tr>
-                    <tr>
                         <td class="td">Emailová adresa</td>
                         <td class="td"><input type="text" id="email" name="email" [(ngModel)]="form.email"/><br /></td>
                     </tr>
                     <tr>
                         <td class="td">Telefonní číslo</td>
-                        <td class="td"><input type="number" id="telphone" name="telephone" [(ngModel)]="form.telephone"/><br /></td>
-                    </tr>
-                    <tr>
-                        <td class="td">Role</td>
-                        <td class="td">
-                            <select [(ngModel)]="form.selectedRole" [ngModelOptions]="{standalone: true}">
-                                <option *ngFor="let role of roles" [value]="role.role_id">
-                                    {{ role.popis_role }}
-                                </option>
-                            </select>
-                        </td>
+                        <td class="td"><input type="number" id="telphone" name="telephone" min="0" [(ngModel)]="form.telephone"/><br /></td>
                     </tr>
                 </tbody>
             </table>
