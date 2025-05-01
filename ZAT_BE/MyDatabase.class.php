@@ -175,6 +175,29 @@ class MyDatabase
         return $this->selectFromTable(TABLE_PUJCUJICI, $fromStatement);
     }
 
+    public function getUser($pujcujici_id) {
+        // ziskam vsechny uzivatele z DB razene dle ID a vratim je
+        $fromStatement = "pujcujici_id, jmeno, prijmeni, prezdivka, telefon, email";
+        $whereStatement = "`pujcujici`.`pujcujici_id`= $pujcujici_id";
+        return $this->selectFromTable(TABLE_PUJCUJICI, $fromStatement, $whereStatement);
+    }
+
+    public function addNewUser (string $jmeno, string $prijmeni, string $prezdivka, string $telefon, string $email) {
+        $insertStatement = "jmeno, prijmeni, prezdivka, telefon, email";
+        $insertValues = "'$jmeno', '$prijmeni', '$prezdivka', '$telefon', '$email'";
+        return $this->insertIntoTable(TABLE_PUJCUJICI, $insertStatement, $insertValues);
+    }
+
+    public function updateUser(int $pujcujici_id, string $jmeno, string $prijmeni, string $prezdivka, string $telefon, string $email)
+    {
+        // slozim cast s hodnotami
+        $updateStatementWithValues = "`jmeno`='$jmeno', `prijmeni`='$prijmeni', `prezdivka`='$prezdivka', `telefon`='$telefon', `email`='$email'";
+        // podminka
+        $whereStatement = "`pujcujici`.`pujcujici_id`=$pujcujici_id";
+        // provedu update
+        return $this->updateInTable(TABLE_PUJCUJICI, $updateStatementWithValues, $whereStatement);
+    }
+
 
     ///////////////////  KONEC: Konkretni funkce  ////////////////////////////////////////////
 

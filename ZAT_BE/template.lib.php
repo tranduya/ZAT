@@ -71,8 +71,8 @@ function createBorrowsTemplate($dbData) {
         $jsonData[] = array(
             'vypujcka_id' => $data['vypujcka_id'],
             'polozka_id' => $data['polozka_id'],
-            'objednava_osoba_id' => $data['objednava_osoba_id'],
-            'resi_osoba_id' => $data['resi_osoba_id'],
+            'objednava_pujcujici_id' => $data['objednava_pujcujici_id'],
+            'resi_pujcujici_id' => $data['resi_pujcujici_id'],
             'stav_id' => $data['stav_id'],
             'dat_zapujceni' => $data['dat_zapujceni'],
             'dat_navraceni' => $data['dat_navraceni_plan'],
@@ -104,21 +104,6 @@ function createStatesTemplate($dbData) {
             'nazev_stavu' => $data['nazev_stavu']
         );
     }
-    return $jsonData;
-}
-
-
-function createCategoryTemplate($dbData)
-{
-    $jsonData = array();
-    foreach ($dbData as $data) {
-        $jsonData[] = array(
-            'kategorie_id' => $data['kategorie_id'],
-            'popis_kategorie' => $data['popis_kategorie'],
-            'seo_popis' => $data['seo_popis']
-        );
-    }
-
     return $jsonData;
 }
 ?>
