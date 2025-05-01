@@ -1,0 +1,99 @@
+<div>
+  <page-header title="Přehled vypůjček" />
+    <div class="content">
+      <kendo-grid
+        [pageable]="false"
+        [sortable]="true"
+        [filterable]="true"
+        [selectable]="false"
+        [height]="450"
+      >
+        <kendo-grid-column field="nazevPolozky" title="Název" [width]="60">
+          <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+            <kendo-grid-string-filter-cell [showOperators]="false" [column]="column" [filter]="filter">
+            </kendo-grid-string-filter-cell>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="osoba" title="Typ nosiče" [width]="30">
+          <ng-template kendoGridCellTemplate let-pozadavek>
+            <div *ngIf="pozadavek.stav_id === 1" class="badge info">
+              <p class="textWhite">Evidovaná</p>
+            </div>
+            <div *ngIf="pozadavek.stav_id === 2" class="badge warning">
+              <p class="textSize">Zpracovávaná</p>
+            </div>
+            <div *ngIf="pozadavek.stav_id === 3" class="badge success">
+              <p class="textWhite">Schválená</p>
+            </div>
+            <div *ngIf="pozadavek.stav_id === 4"class="badge error">
+              <p class="textWhite">Zamítnutá</p>
+            </div>
+            <div *ngIf="pozadavek.stav_id === 5"class="badge error">
+              <p class="textWhite">Storno</p>
+            </div>
+            <div *ngIf="pozadavek.stav_id === 6" class="badge outdated">
+              <p>Uzavřená</p>
+            </div>
+            <div *ngIf="pozadavek.stav_id === 7" class="badge rented">
+              <p class="textWhite">Půjčeno</p>
+            </div>
+          </ng-template>
+          <ng-template kendoGridFilterCellTemplate let-filter>
+              <dropdown-filter [filter]="filter" textField="nazev_stavu" valueField="stav_id">
+              </dropdown-filter>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="resitel" title="Půjčující" [width]="30">
+          <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+              <kendo-grid-string-filter-cell [showOperators]="false" [column]="column" [filter]="filter">
+              </kendo-grid-string-filter-cell>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="stav" title="Stav vypůjčky" [width]="30">
+          <ng-template kendoGridCellTemplate let-pozadavek>
+            <div *ngIf="pozadavek.stav_id === 1" class="badge info">
+              <p class="textWhite">Evidovaná</p>
+            </div>
+            <div *ngIf="pozadavek.stav_id === 2" class="badge warning">
+              <p class="textSize">Zpracovávaná</p>
+            </div>
+            <div *ngIf="pozadavek.stav_id === 3" class="badge success">
+              <p class="textWhite">Schválená</p>
+            </div>
+            <div *ngIf="pozadavek.stav_id === 4"class="badge error">
+              <p class="textWhite">Zamítnutá</p>
+            </div>
+            <div *ngIf="pozadavek.stav_id === 5"class="badge error">
+              <p class="textWhite">Storno</p>
+            </div>
+            <div *ngIf="pozadavek.stav_id === 6" class="badge outdated">
+              <p>Uzavřená</p>
+            </div>
+            <div *ngIf="pozadavek.stav_id === 7" class="badge rented">
+              <p class="textWhite">Půjčeno</p>
+            </div>
+          </ng-template>
+          <ng-template kendoGridFilterCellTemplate let-filter>
+              <dropdown-filter [filter]="filter" textField="nazev_stavu" valueField="stav_id">
+              </dropdown-filter>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="datZapujceni" title="Půjčeno od" [width]="35" [filterable]="false" 
+          editor="date">
+        </kendo-grid-column>
+        <kendo-grid-column field="datNavraceni" title="Půjčeno do" [width]="35" [filterable]="false" 
+          editor="date">
+        </kendo-grid-column>
+        <kendo-grid-column field="datVraceno" title="Vráceno" [width]="25" [filterable]="false">
+        </kendo-grid-column>
+        <kendo-grid-command-column class="kendo-actions" title="Akce" [width]="45">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <div></div>
+          </ng-template>
+        </kendo-grid-command-column>
+      </kendo-grid>
+      <div id="addNewBorrowBttn">
+        <button class="material-button success" routerLink="nova_vypujcka">Zadat novou výpůjčku</button>
+    </div>
+  </div>
+</div>

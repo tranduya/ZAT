@@ -1,0 +1,31 @@
+<header>
+  <div class="header">
+    <div class="left">
+      <div class="burger-menu" id="burger-menu" (click)="drawer.toggle()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+      <span><a href="" class="title">Evidence knih a mediálních nosičů </a></span>
+    </div>
+  </div>
+</header>
+<body>
+  <kendo-drawer-container>
+    <kendo-drawer #drawer mode="push" [autoCollapse]="sidebarAutoCollapse" [(expanded)]="sidebarExpanded"
+      [items]="sidebarItems" (select)="onSidebarSelect($event)">
+      <ng-template kendoDrawerItemTemplate let-item>
+        <div class="drawer-item" *ngIf="item.path">
+          <span class="drawer-item" *ngIf="sidebarExpanded">{{ item.text }}</span>
+        </div>
+        <div class="drawer-item" *ngIf="!item.path">
+          <span class="drawer-item">{{ item.text }}</span>
+        </div>
+      </ng-template>
+    </kendo-drawer>
+    <!-- Hlavní stránka -->
+    <div class="window-content">
+      <router-outlet></router-outlet>
+    </div>
+  </kendo-drawer-container>
+</body>
