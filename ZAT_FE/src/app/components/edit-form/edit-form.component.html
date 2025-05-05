@@ -1,0 +1,16 @@
+<div class="edit-page">
+    <div class="form">
+        <input type="text" placeholder="Název díla" [(ngModel)]="form.nazev"/>
+        <input type="text" placeholder="Autor" [(ngModel)]="form.autor">
+        <input type="number" placeholder="Typ nosiče" [(ngModel)]="form.nosic_id"/>
+        <input type="date" placeholder="Datum pořízení" [(ngModel)]="form.dat_porizeni"/>
+        <input type="text" placeholder="Délka" [(ngModel)]="form.delka"/>
+        <input type="text" placeholder="Popis" [(ngModel)]="form.popis"/>
+    </div>
+</div>
+<kendo-dialog-actions>
+    <button kendoButton class="material-button success" themeColor="primary">
+        Ano
+      </button>
+      <button kendoButton class="material-button default">Ne</button>
+</kendo-dialog-actions>

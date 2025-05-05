@@ -27,7 +27,8 @@ import { UserManagementComponent } from './user-management/user-management.compo
 import { NewUserComponent } from './new-user/new-user.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { IndicatorsModule } from '@progress/kendo-angular-indicators';
-import { NosiceComponent } from './nosice/nosice.component';
+import { DilaComponent } from './dila/dila.component';
+import { EditFormComponent } from './components/edit-form/edit-form.component';
 
 
 
@@ -42,10 +43,12 @@ import { NosiceComponent } from './nosice/nosice.component';
     UserManagementComponent,
     NewUserComponent,
     EditUserComponent,
-    NosiceComponent,
+    DilaComponent,
+    EditFormComponent,
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     LayoutModule,
     BrowserAnimationsModule,
     GridModule,
@@ -54,8 +57,7 @@ import { NosiceComponent } from './nosice/nosice.component';
     DropDownsModule,
     HttpClientModule,
     RouterModule.forRoot([
-      // { path: '', component: HomeComponent },
-      { path: '', component: NosiceComponent},
+      { path: '', component: DilaComponent},
       { path: 'prehled_vypujcek', component: VypujckyComponent},
       { path: 'sprava_uzivatelu', component: UserManagementComponent},
       { path: 'sprava_uzivatelu/novy_uzivatel', component: NewUserComponent},

@@ -1,27 +1,16 @@
 export interface Vypujcka {
     vypujcka_id: number
-    polozka_id: number
-    objednava_pujcujici_id: number
-    resi_pujcujici_id: number
+    nosic_id: number
+    pujcujici_id: number
     stav_id: number
-    dat_zapujceni: string
-    dat_navraceni: string
-    dat_vraceno: string | null
-    cena_zalohy: number
-    cena_vypujcky: number
-    nazevPolozky?: string
-    stav?: string
-    datZapujceni?: string
-    datZapujceniJS: Date
-    datNavraceni?: string
-    datNavraceniJS: Date
-    datVraceno?: string
-    osoba?: string
-    resitel?: string
+    datZapujceni: Date
+    datVraceniPlan: Date
+    datVraceni: Date | null
 }
 
 export interface VypujckaBasicInfo {
-    polozka_id: number
-    dat_zapujceni: string
-    dat_navraceni: string
+    vypujcka_id: number
+    stav_id: number
+    prezdivka: string
+    dat_vraceni_plan: Date
 }

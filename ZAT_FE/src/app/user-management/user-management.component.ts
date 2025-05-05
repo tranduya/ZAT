@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { User } from '../interface/user';
 import { UserService } from '../service/user.service';
-import { Role } from '../interface/role';
 import { showNotification } from '../lib/notification';
 import { NotificationService } from '@progress/kendo-angular-notification';
 import { Router } from '@angular/router';
@@ -13,7 +12,6 @@ import { Router } from '@angular/router';
 })
 export class UserManagementComponent {
   users: User[] = [];
-  roles: Role[] = [];
   dialogOpened = false;
   selectedUser: User | undefined;
   isAuthorizated = false;

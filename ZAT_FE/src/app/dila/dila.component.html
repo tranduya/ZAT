@@ -1,0 +1,126 @@
+<div>
+    <page-header title="Přehled knih a mediálních nosičů" />
+      <div class="content">
+        <kendo-grid
+          [data]="dila"
+          [kendoGridBinding]="dila"
+          [pageable]="false"
+          [sortable]="true"
+          [filterable]="true"
+          [selectable]="false"
+          [height]="450"
+          (edit)="editDiloHandler($event)"
+          (add)="addDiloHandler()"
+        >
+          <ng-template kendoGridToolbarTemplate>
+            <button kendoGridAddCommand>Nové dílo</button>
+          </ng-template>
+          <kendo-grid-column field="nazev" title="Název" [width]="60">
+            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+              <kendo-grid-string-filter-cell [showOperators]="false" [column]="column" [filter]="filter">
+              </kendo-grid-string-filter-cell>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="autor" title="Autor" [width]="60">
+            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+              <kendo-grid-string-filter-cell [showOperators]="false" [column]="column" [filter]="filter">
+              </kendo-grid-string-filter-cell>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="nosic_id" title="Typ nosiče" [width]="60">
+            <ng-template kendoGridCellTemplate let-dilo>
+                <div *ngIf="dilo.nosic_id === 1">
+                  <p>Kniha</p>
+                </div>
+                <div *ngIf="dilo.nosic_id === 2">
+                  <p>CD</p>
+                </div>
+                <div *ngIf="dilo.nosic_id === 3">
+                  <p>DVD</p>
+                </div>
+              </ng-template>
+              <ng-template kendoGridFilterCellTemplate let-filter>
+                  <dropdown-filter [filter]="filter" [data]="nosicTyp" textField="nazev" valueField="nosic_id">
+                  </dropdown-filter>
+              </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="stav_id" title="Stav díla" [width]="60">
+            <ng-template kendoGridCellTemplate let-dilo>
+              <div *ngIf="dilo.stav_id === 1" class="badge warning">
+                <p>Zadáno</p>
+              </div>
+              <div *ngIf="dilo.stav_id === 2" class="badge rented">
+                <p class="textWhite">Půjčeno</p>
+              </div>
+              <div *ngIf="dilo.stav_id === 3" class="badge outdated">
+                <p class="textWhite">Uzavřeno</p>
+              </div>
+              <div *ngIf="dilo.stav_id === 4" class="badge info">
+                <p class="textWhite">V knihovně</p>
+              </div>
+            </ng-template>
+            <ng-template kendoGridFilterCellTemplate let-filter>
+                <dropdown-filter [filter]="filter" [data]="stavy" textField="nazev_stavu" valueField="stav_id">
+                </dropdown-filter>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="prezdivka" title="Půjčeno komu" [width]="60">
+            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                <kendo-grid-string-filter-cell [showOperators]="false" [column]="column" [filter]="filter">
+                </kendo-grid-string-filter-cell>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column field="dat_vraceni_plan" title="Půjčeno do" [width]="60" [filterable]="false" editor="date">
+          </kendo-grid-column>
+          <kendo-grid-command-column class="kendo-actions" title="Akce" [width]="80">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <div class="user-buttons">
+              <button kendoGridEditCommand class="material-button default" [hidden]="editable">
+                <kendo-icon name="edit"></kendo-icon>
+              </button>
+              <button class="material-button error" (click)="handleClickDeleteDilo(dataItem)"
+              [hidden]="editable || dataItem.stav_id != 4">
+                <kendo-icon name="trash"></kendo-icon>
+              </button>
+              <button kendoGridSaveCommand class="material-button success" [disabled]="!editable">
+                <kendo-icon name="save"></kendo-icon>
+              </button>
+              <button kendoGridCancelCommand class="material-button default" [disabled]="!editable">
+                <kendo-icon name="cancel"></kendo-icon>
+              </button>
+            </div>
+            </ng-template>
+          </kendo-grid-command-column>
+          <ng-template kendoGridDetailTemplate [data]="dila" let-dataItem>
+            <section>
+              <p><strong>Datum pořízení:&nbsp;</strong> {{ dataItem.dat_porizeni }}</p>
+              <p><strong>Délka:&nbsp;</strong> {{ dataItem.delka }} </p>
+              <p><strong>Popis:&nbsp;</strong> {{ dataItem.popis }} </p>
+            </section>
+          </ng-template>
+        </kendo-grid>
+        <kendo-dialog title={{editDialogTitle}}
+          *ngIf="editDialogOpened"
+          (close)="handleClickCloseDialog()">
+          <app-edit-form></app-edit-form>
+        </kendo-dialog>
+        <kendo-dialog
+          *ngIf="dialogOpened"
+          [minWidth]="250"
+          [width]="450"
+          >
+          <p style="margin: 30px; text-align: center;">
+              Opravdu chcete vyřadit dílo {{selectedDilo?.nazev}} z knihovny?
+          </p>
+          <kendo-dialog-actions>
+              <button kendoButton class="material-button error" (click)="handleClickDialog('yes')" themeColor="primary">
+                Ano
+              </button>
+              <button kendoButton class="material-button default" (click)="handleClickDialog('no')">Ne</button>
+          </kendo-dialog-actions>
+        </kendo-dialog>
+        <!-- <div id="addNewDiloBttn">
+            <button class="material-button success" routerLink="nove_dilo">Nové dílo</button>
+        </div> -->
+      </div>
+  </div>
