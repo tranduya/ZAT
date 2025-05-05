@@ -136,27 +136,27 @@ class MyDatabase
      * @param $array2 Druhe pole
      * @param $idField Podle ceho to ma byt spojovano
      */
-    // public function mergeArrays($array1, $array2, $idField)
-    // {
-    //     $mergedArray = array();
+    public function mergeArrays($array1, $array2, $idField)
+    {
+        $mergedArray = array();
 
-    //     foreach ($array1 as $item) {
-    //         $id = $item[$idField];
-    //         $mergedArray[$id] = $item;
-    //     }
+        foreach ($array1 as $item) {
+            $id = $item[$idField];
+            $mergedArray[$id] = $item;
+        }
 
-    //     foreach ($array2 as $item) {
-    //         $id = $item[$idField];
-    //         if (array_key_exists($id, $mergedArray)) {
-    //             // Merge the data based on the common id
-    //             $mergedArray[$id] = array_merge($mergedArray[$id], $item);
-    //         } else {
-    //             continue;
-    //         }
-    //     }
+        foreach ($array2 as $item) {
+            $id = $item[$idField];
+            if (array_key_exists($id, $mergedArray)) {
+                // Merge the data based on the common id
+                $mergedArray[$id] = array_merge($mergedArray[$id], $item);
+            } else {
+                continue;
+            }
+        }
 
-    //     return array_values($mergedArray);
-    // }
+        return array_values($mergedArray);
+    }
 
 
     ///////////////////  KONEC: Obecne funkce  ////////////////////////////////////////////
@@ -170,32 +170,73 @@ class MyDatabase
      */
     public function getAllUsers()
     {
-        // ziskam vsechny uzivatele z DB razene dle ID a vratim je
-        $fromStatement = "pujcujici_id, prezdivka, jmeno, prijmeni, telefon, email";
-        return $this->selectFromTable(TABLE_PUJCUJICI, $fromStatement);
+        return $this->selectFromTable(TABLE_PUJCUJICI);
     }
 
-    public function getUser($pujcujici_id) {
+    public function getUser($pujcujiciId) {
         // ziskam vsechny uzivatele z DB razene dle ID a vratim je
         $fromStatement = "pujcujici_id, jmeno, prijmeni, prezdivka, telefon, email";
-        $whereStatement = "`pujcujici`.`pujcujici_id`= $pujcujici_id";
+        $whereStatement = "`pujcujici`.`pujcujici_id`= $pujcujiciId";
         return $this->selectFromTable(TABLE_PUJCUJICI, $fromStatement, $whereStatement);
     }
 
-    public function addNewUser (string $jmeno, string $prijmeni, string $prezdivka, string $telefon, string $email) {
+    public function addNewUser(string $jmeno, string $prijmeni, string $prezdivka, string $telefon, string $email) {
         $insertStatement = "jmeno, prijmeni, prezdivka, telefon, email";
         $insertValues = "'$jmeno', '$prijmeni', '$prezdivka', '$telefon', '$email'";
         return $this->insertIntoTable(TABLE_PUJCUJICI, $insertStatement, $insertValues);
     }
 
-    public function updateUser(int $pujcujici_id, string $jmeno, string $prijmeni, string $prezdivka, string $telefon, string $email)
+    public function updateUser(int $pujcujiciId, string $jmeno, string $prijmeni, string $prezdivka, string $telefon, string $email)
     {
         // slozim cast s hodnotami
         $updateStatementWithValues = "`jmeno`='$jmeno', `prijmeni`='$prijmeni', `prezdivka`='$prezdivka', `telefon`='$telefon', `email`='$email'";
         // podminka
-        $whereStatement = "`pujcujici`.`pujcujici_id`=$pujcujici_id";
+        $whereStatement = "`pujcujici`.`pujcujici_id`=$pujcujiciId";
         // provedu update
         return $this->updateInTable(TABLE_PUJCUJICI, $updateStatementWithValues, $whereStatement);
+    }
+
+    // ------------------------------------------------------------------------------
+
+    public function getAllDila() {
+        return $this->selectFromTable(TABLE_DILO);
+    }
+
+    public function getDilo($diloId) {
+        print("doslo to");
+        $fromStatement = "*";
+        $whereStatement = "dilo`.`dilo_id`= $diloId";
+        return $this->selectFromTable(TABLE_DILO, $fromStatement, $whereStatement);
+    }
+
+    // ------------------------------------------------------------------------------
+    public function getNosicTypes() {
+        return $this->selectFromTable(TABLE_TYP_NOSICE);
+    }
+    
+    // ------------------------------------------------------------------------------
+    public function getAllStates() {
+        $fromStatement = "stav_id, nazev_stavu";
+        return $this->selectFromTable(TABLE_STAV, $fromStatement);
+    }
+    
+    // ------------------------------------------------------------------------------
+    public function getBorrowsBasicInfo($diloId) {
+        $fromStatement = "
+        vypujcka.vypujcka_id, 
+        vypujcka.stav_id, 
+        vypujcka.dat_vraceni_plan,
+        pujcujici.prezdivka
+    ";
+
+    $whereStatement = "vypujcka.dilo_id = " . intval($diloId) . " AND vypujcka.stav_id <> 4";
+
+    return $this->selectFromTable(
+        "vypujcka 
+         JOIN pujcujici ON pujcujici.pujcujici_id = vypujcka.pujcujici_id",
+        $fromStatement,
+        $whereStatement
+    );
     }
 
 

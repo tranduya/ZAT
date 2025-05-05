@@ -33,10 +33,9 @@ if (in_array($_SERVER["REQUEST_METHOD"], ["GET", "POST", "PUT", "DELETE"])) {
     $path = $_SERVER['REQUEST_URI'];
     $parts = explode("/", $path);
     $keyName = $parts[3];
-    $userId = -1;
-    $userPwd = '';
+    $id = -1;
     if (count($parts) >= 5) {
-        $userId = $parts[4];
+        $id = $parts[4];
     }
 
     // Get the JSON data from the request body
@@ -47,18 +46,18 @@ if (in_array($_SERVER["REQUEST_METHOD"], ["GET", "POST", "PUT", "DELETE"])) {
     
     $data = array();
     if ($method === 'GET') {
-        $data = specifyDataType($keyName, $userId, $myDB, $userPwd);
+        $data = specifyDataType($keyName, $id, $myDB);
 
         if (count($data) == 0) {
-            http_response_code(401);
+            http_response_code(204);
         }
         echo json_encode($data);
     } elseif ($method === 'POST') {
         $data = json_decode(file_get_contents("php://input"));
         addToDatabase($keyName, $data, $myDB);
     } elseif ($method === 'PUT') {
-        $userId = json_decode(file_get_contents("php://input"));
-        updateDatabase($keyName, $userId, $myDB);
+        $data = json_decode(file_get_contents("php://input"));
+        updateDatabase($keyName, $data, $myDB);
     } elseif ($method === 'DELETE') {
         $data = $parts[4];
         deleteFromDatabase($keyName, $data, $myDB);
@@ -74,29 +73,29 @@ if (in_array($_SERVER["REQUEST_METHOD"], ["GET", "POST", "PUT", "DELETE"])) {
 
 
 /*---------------------GET functions---------------------- */
-function specifyDataType($keyName, $userId, $db, $userPwd)
+function specifyDataType($keyName, $id, $db)
 {
     $resultData = array();
-    if ($keyName == 'games') {
-        $games = $db->mergeArrays($db->getAllGames(), $db->getAllGamesDetails(), 'polozka_id');
-        $resultData = createGameTemplate($games);
-    } else if ($keyName == 'gameRents') {
-        $rents = $db->getAllRents();
-        $resultData = createGameRentTemplate($rents);
+    if ($keyName == 'dila') {
+        $dila = $db->getAllDila();
+        $resultData = createDiloTemplate($dila);
+    } else if ($keyName == 'dilo') {
+        $dilo = $db->getDilo($id);
+        $resultData = createDiloTemplate($dilo);
     } else if ($keyName == 'users') {
         $users = $db->getAllUsers();
         $resultData = createUserTemplate($users);
     } else if ($keyName == 'user') {
-        $user = $db->getUser($userId);
+        $user = $db->getUser($id);
         $resultData = createUserTemplate($user);
     } else if ($keyName == 'borrows') {
-        $vypujcky = $db->getAllUserBorrows($userId);
+        $vypujcky = $db->getAllUserBorrows($id);
         $resultData = createBorrowsTemplate($vypujcky);
-    } else if ($keyName == 'allBorrows') {
-        $vypujcky = $db->getAllBorrows();
-        $resultData = createBorrowsTemplate($vypujcky);
+    } else if ($keyName == 'typNosice') {
+        $nosicTypes = $db->getNosicTypes();
+        $resultData = createNosicTypeTemplate($nosicTypes);
     } else if ($keyName == 'borrowsBasicInfo') {
-        $vypujcky = $db->getBorrowsBasicInfo();
+        $vypujcky = $db->getBorrowsBasicInfo($id);
         $resultData = createBorrowsBasicInfoTemplate($vypujcky);
     } else if ($keyName == 'states') {
         $states = $db->getAllStates();

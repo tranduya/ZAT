@@ -1,36 +1,16 @@
 <?php
-function createGameTemplate($dbData)
+function createDiloTemplate($dbData)
 {
     $jsonData = array();
     foreach ($dbData as $data) {
         $jsonData[] = array(
-            'polozka_id' => $data['polozka_id'],
-            'titul_polozky' => $data['titul_polozky'],
-            'kratky_popis' => $data['kratky_popis'],
-            'popis' => $data['popis'],
-            'pujcovna_zaloha' => $data['pujcovna_zaloha'],
-            'seo_url' => $data['seo_url'],
-            'pujcovne_id' => $data['pujcovne_id'],
-            'vek_hracu' => $data['vek_hracu'],
-            'pocet_hracu' => $data['pocet_hracu'],
-            'delka_hry' => $data['delka_hry'],
-            'prehled_komponent' => $data['prehled_komponent'],
-            'odkaz_web_herni' => $data['odkaz_web_herni']
-        );
-    }
-    
-    return $jsonData;
-}
-
-function createGameRentTemplate($dbData)
-{
-    $jsonData = array();
-    foreach ($dbData as $data) {
-        $jsonData[] = array(
-            'pujcovne_id' => $data['pujcovne_id'],
-            'pujcovne_pidi' => $data['pujcovne_pidi'],
-            'pujcovne_medi' => $data['pujcovne_medi'],
-            'pujcovne_maxi' => $data['pujcovne_maxi']
+            'dilo_id' => $data['dilo_id'],
+            'nosic_id' => $data['typ_nosice_id'],
+            'nazev' => $data['nazev'],
+            'autor' => $data['autor'],
+            'dat_porizeni' => $data['dat_porizeni'],
+            'delka' => $data['delka'],
+            'popis' => $data['popis']
         );
     }
     
@@ -50,18 +30,6 @@ function createUserTemplate($dbData) {
         );
     }
     
-    return $jsonData;
-}
-
-function createRoleTemplate($dbData) {
-    $jsonData = array();
-    foreach ($dbData as $data) {
-        $jsonData[] = array(
-            'role_id' => $data['role_id'],
-            'popis_role' => $data['popis_role']
-        );
-    }
-
     return $jsonData;
 }
 
@@ -88,9 +56,10 @@ function createBorrowsBasicInfoTemplate($dbData) {
     $jsonData = array();
     foreach ($dbData as $data) {
         $jsonData[] = array(
-            'polozka_id' => $data['polozka_id'],
-            'dat_zapujceni' => $data['dat_zapujceni'],
-            'dat_navraceni' => $data['dat_navraceni_plan']
+            'vypujcka_id' => $data['vypujcka_id'],
+            'prezdivka' => $data['prezdivka'],
+            'stav_id' => $data['stav_id'],
+            'dat_vraceni_plan' => $data['dat_vraceni_plan']
         );
     }
     return $jsonData;
@@ -102,6 +71,17 @@ function createStatesTemplate($dbData) {
         $jsonData[] = array(
             'stav_id' => $data['stav_id'],
             'nazev_stavu' => $data['nazev_stavu']
+        );
+    }
+    return $jsonData;
+}
+
+function createNosicTypeTemplate($dbData) {
+    $jsonData = array();
+    foreach ($dbData as $data) {
+        $jsonData[] = array (
+            'nosic_id' => $data['typ_nosice_id'],
+            'nazev' => $data['nazev_typu_nosice']
         );
     }
     return $jsonData;
