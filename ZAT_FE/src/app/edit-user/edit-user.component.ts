@@ -10,7 +10,6 @@ import { showNotification } from '../lib/notification';
 })
 export class EditUserComponent extends NewUserComponent{
   user: User | undefined;
-  
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -32,15 +31,13 @@ export class EditUserComponent extends NewUserComponent{
     this.userService.updateUser(user, id).subscribe({
       next: () => {
         this.router.navigate([`/sprava_uzivatelu`]);
-        showNotification("Uživatel byl úspěšně uložen.", 'success', this.notificationService);
+        showNotification("Uživatel byl úspěšně aktualizován.", 'success', this.notificationService);
       },
       error: err => {
-        showNotification("Uživatel se nepovedl uložit.", 'error', this.notificationService);
+        showNotification("Uživatel se nepovedl aktualizovat.", 'error', this.notificationService);
       }
     })
   }
-  
-  defaultRole: string = '';
   
   private fillDataContainers() {
     this.form.nickname = this.user?.prezdivka!
@@ -68,6 +65,7 @@ export class EditUserComponent extends NewUserComponent{
     this.onUpdateUser(user, user.pujcujici_id);
   }
 
+  
   handleClickRefreshPage() {
     window.location.reload()
   }

@@ -12,20 +12,20 @@ export class VypujckaService {
 
   constructor(private http: HttpClient) { }
 
-  // getUserVypujcky(id: number): Observable<Vypujcka[]> {
-  //   return this.http.get<Vypujcka[]>(`${this.apiUrl}/borrows/${id}`);
-  // }
-
   getVypujckaBasicInfo(id: number): Observable<VypujckaBasicInfo[]> {
     return this.http.get<VypujckaBasicInfo[]>(`${this.apiUrl}/borrowsBasicInfo/${id}`);
   }
 
   getVypujcky(): Observable<Vypujcka[]> {
-    return this.http.get<Vypujcka[]>(`${this.apiUrl}/allBorrows`);
+    return this.http.get<Vypujcka[]>(`${this.apiUrl}/borrows`);
+  }
+
+  getVypujcka(id: number):Observable<Vypujcka[]> {
+    return this.http.get<Vypujcka[]>(`${this.apiUrl}/borrows/${id}`);
   }
 
   createVypujcka(vypujcka: Vypujcka): Observable<Vypujcka> {
-    return this.http.post<Vypujcka>(`${this.apiUrl}/borrows/`, vypujcka);
+    return this.http.post<Vypujcka>(`${this.apiUrl}/borrows`, vypujcka);
   }
 
   updateVypujcka(vypujcka: Vypujcka, vypujcka_id: number): Observable<Vypujcka> {

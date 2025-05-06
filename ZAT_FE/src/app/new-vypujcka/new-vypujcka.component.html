@@ -1,0 +1,47 @@
+<div>
+    <page-header title="Zadání nové výpůjčky" />
+    <div id="content">
+        <form>
+            <table class="table">
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td class="td">Název díla</td>
+                        <select [(ngModel)]="form.dilo_id" [ngModelOptions]="{standalone: true}">
+                            <option *ngFor="let dilo of dila" [value]="dilo.dilo_id">
+                                {{ dilo.nazev }}
+                            </option>
+                        </select>
+                        <td class="td">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td">Půjčující</td>
+                        <select [(ngModel)]="form.pujcujici_id" [ngModelOptions]="{standalone: true}">
+                            <option *ngFor="let user of users" [value]="user.pujcujici_id">
+                                {{ user.prezdivka }}
+                            </option>
+                        </select>
+                        <td class="td">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td">Datum zapůjčení</td>
+                        <td class="td"><input type="date" id="dat_zapujceni" name="dat_zapujceni"
+                            [(ngModel)]="form.dat_zapujceni" /><br /></td>
+                    </tr>
+                    <tr>
+                        <td class="td">Datum vrácení (plán)</td>
+                        <td class="td"><input type="date" id="dat_vraceni_plan" name="dat_vraceni_plan"
+                            [(ngModel)]="form.dat_vraceni_plan"/><br /></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="control-buttons">
+                <button class="material-button success" type="submit" (click)="handleClickSaveVypujcka()">Uložit</button>
+                <input type="reset" class="material-button default" value="Vymazat formulář" />
+                <a routerLink=".." class="material-button default">Zrušit</a>
+            </div>
+        </form>
+    </div>
+</div>

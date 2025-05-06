@@ -40,3 +40,7 @@ p {
     display: flex;
     text-align: center;
 }
+
+#addDiloBttn {
+    padding-top: 10px;
+}

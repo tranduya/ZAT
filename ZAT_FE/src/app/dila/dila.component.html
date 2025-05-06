@@ -9,12 +9,7 @@
           [filterable]="true"
           [selectable]="false"
           [height]="450"
-          (edit)="editDiloHandler($event)"
-          (add)="addDiloHandler()"
         >
-          <ng-template kendoGridToolbarTemplate>
-            <button kendoGridAddCommand>Nové dílo</button>
-          </ng-template>
           <kendo-grid-column field="nazev" title="Název" [width]="60">
             <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
               <kendo-grid-string-filter-cell [showOperators]="false" [column]="column" [filter]="filter">
@@ -46,16 +41,10 @@
           </kendo-grid-column>
           <kendo-grid-column field="stav_id" title="Stav díla" [width]="60">
             <ng-template kendoGridCellTemplate let-dilo>
-              <div *ngIf="dilo.stav_id === 1" class="badge warning">
-                <p>Zadáno</p>
-              </div>
-              <div *ngIf="dilo.stav_id === 2" class="badge rented">
+              <div *ngIf="dilo.stav_id === 1" class="badge rented">
                 <p class="textWhite">Půjčeno</p>
               </div>
-              <div *ngIf="dilo.stav_id === 3" class="badge outdated">
-                <p class="textWhite">Uzavřeno</p>
-              </div>
-              <div *ngIf="dilo.stav_id === 4" class="badge info">
+              <div *ngIf="dilo.stav_id === 3" class="badge info">
                 <p class="textWhite">V knihovně</p>
               </div>
             </ng-template>
@@ -75,18 +64,12 @@
           <kendo-grid-command-column class="kendo-actions" title="Akce" [width]="80">
             <ng-template kendoGridCellTemplate let-dataItem>
               <div class="user-buttons">
-              <button kendoGridEditCommand class="material-button default" [hidden]="editable">
+              <button class="material-button default" (click)="handleClickEditDilo(dataItem)">
                 <kendo-icon name="edit"></kendo-icon>
               </button>
               <button class="material-button error" (click)="handleClickDeleteDilo(dataItem)"
-              [hidden]="editable || dataItem.stav_id != 4">
+              [hidden]="dataItem.stav_id != 3">
                 <kendo-icon name="trash"></kendo-icon>
-              </button>
-              <button kendoGridSaveCommand class="material-button success" [disabled]="!editable">
-                <kendo-icon name="save"></kendo-icon>
-              </button>
-              <button kendoGridCancelCommand class="material-button default" [disabled]="!editable">
-                <kendo-icon name="cancel"></kendo-icon>
               </button>
             </div>
             </ng-template>
@@ -99,11 +82,6 @@
             </section>
           </ng-template>
         </kendo-grid>
-        <kendo-dialog title={{editDialogTitle}}
-          *ngIf="editDialogOpened"
-          (close)="handleClickCloseDialog()">
-          <app-edit-form></app-edit-form>
-        </kendo-dialog>
         <kendo-dialog
           *ngIf="dialogOpened"
           [minWidth]="250"
@@ -119,8 +97,8 @@
               <button kendoButton class="material-button default" (click)="handleClickDialog('no')">Ne</button>
           </kendo-dialog-actions>
         </kendo-dialog>
-        <!-- <div id="addNewDiloBttn">
+        <div id="addDiloBttn">
             <button class="material-button success" routerLink="nove_dilo">Nové dílo</button>
-        </div> -->
+        </div>
       </div>
   </div>

@@ -10,8 +10,7 @@ import { NotificationService } from '@progress/kendo-angular-notification';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Rezervační systém Kavenu';
-  username?: string;
+  title = 'Evidence knih a mediálních nosičů';
 
   // Sidebar
   public sidebarExpanded = window.innerWidth > 1024 ? true : false

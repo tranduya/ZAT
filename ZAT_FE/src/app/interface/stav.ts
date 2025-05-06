@@ -1,4 +1,4 @@
 export interface Stav {
-    stavId: number
-    nazevStavu: string
+    stav_id: number
+    nazev_stavu: string
 }

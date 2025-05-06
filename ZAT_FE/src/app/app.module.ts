@@ -28,7 +28,10 @@ import { NewUserComponent } from './new-user/new-user.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { IndicatorsModule } from '@progress/kendo-angular-indicators';
 import { DilaComponent } from './dila/dila.component';
-import { EditFormComponent } from './components/edit-form/edit-form.component';
+import { NewDiloComponent } from './new-dilo/new-dilo.component';
+import { EditDiloComponent } from './edit-dilo/edit-dilo.component';
+import { EditVypujckaComponent } from './edit-vypujcka/edit-vypujcka.component';
+import { NewVypujckaComponent } from './new-vypujcka/new-vypujcka.component';
 
 
 
@@ -44,11 +47,13 @@ import { EditFormComponent } from './components/edit-form/edit-form.component';
     NewUserComponent,
     EditUserComponent,
     DilaComponent,
-    EditFormComponent,
+    NewDiloComponent,
+    EditDiloComponent,
+    EditVypujckaComponent,
+    NewVypujckaComponent,
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     LayoutModule,
     BrowserAnimationsModule,
     GridModule,
@@ -58,7 +63,11 @@ import { EditFormComponent } from './components/edit-form/edit-form.component';
     HttpClientModule,
     RouterModule.forRoot([
       { path: '', component: DilaComponent},
+      { path: 'edit_dilo/:id', component: EditDiloComponent},
+      { path: 'nove_dilo', component: NewDiloComponent},
       { path: 'prehled_vypujcek', component: VypujckyComponent},
+      { path: 'prehled_vypujcek/edit-vypujcka/:id', component: EditVypujckaComponent},
+      { path: 'prehled_vypujcek/nova_vypujcka', component: NewVypujckaComponent},
       { path: 'sprava_uzivatelu', component: UserManagementComponent},
       { path: 'sprava_uzivatelu/novy_uzivatel', component: NewUserComponent},
       { path: 'sprava_uzivatelu/:id', component: EditUserComponent},

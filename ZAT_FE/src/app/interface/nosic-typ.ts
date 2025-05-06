@@ -1,4 +1,4 @@
 export interface NosicTyp {
-    nosicId: number
+    nosic_id: number
     nazev: string
 }

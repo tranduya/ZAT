@@ -13,6 +13,6 @@ export class StavService {
   constructor(private http: HttpClient) { }
 
   getStavy(): Observable<Stav[]> {
-    return this.http.get<Stav[]>(`${this.apiUrl}/states/`);
+    return this.http.get<Stav[]>(`${this.apiUrl}/states`);
   }
 }

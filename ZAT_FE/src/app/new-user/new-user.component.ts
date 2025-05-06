@@ -11,7 +11,7 @@ import { NotificationService } from '@progress/kendo-angular-notification';
   styleUrls: ['./new-user.component.css']
 })
 export class NewUserComponent {
-  /* Form data containers*/
+  /* Form data container*/
   form: any = {
     nickname: null,
     name: null,
