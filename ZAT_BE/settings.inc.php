@@ -15,7 +15,7 @@
     define("TABLE_DILO", "dilo");
     define("TABLE_PUJCUJICI","pujcujici");
     define("TABLE_STAV","stav");
-    define("TABLE_TYP_NOSICE","typ_nosice");
+    define("TABLE_TYP_NOSICE","nosic");
     define("TABLE_VYPUJCKA","vypujcka");
 
     ///// vsechny stranky webu ////////

@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // --- Zpracovní požadavku
-// Check for the incoming request method (POST).
+// Check for the incoming request method.
 if (in_array($_SERVER["REQUEST_METHOD"], ["GET", "POST", "PUT", "DELETE"])) {
     // hlavicka odpovedi
     header('Content-Type: application/json; charset=utf-8');
@@ -89,7 +89,10 @@ function specifyDataType($keyName, $id, $db)
         $user = $db->getUser($id);
         $resultData = createUserTemplate($user);
     } else if ($keyName == 'borrows') {
-        $vypujcky = $db->getAllUserBorrows($id);
+        $vypujcky = $db->getAllBorrows();
+        $resultData = createBorrowsTemplate($vypujcky);
+    } else if ($keyName == 'borrow') {
+        $vypujcky = $db->getBorrow($id);
         $resultData = createBorrowsTemplate($vypujcky);
     } else if ($keyName == 'typNosice') {
         $nosicTypes = $db->getNosicTypes();
@@ -111,7 +114,9 @@ function addToDatabase($keyName, $data, $db) {
     if ($keyName == 'user') {
         addUser($data, $db);
     } else if ($keyName == 'borrows') {
-        // addBorrow($data, $db);
+        addBorrow($data, $db);
+    } else if ($keyName == 'dilo') {
+        addDilo($data, $db);
     }
 }
 
@@ -121,8 +126,29 @@ function addUser($data, $db) {
     $prezdivka = $data->prezdivka;
     $telefon = $data->telefon;
     $email = $data->email;
-
+    
     $db->addNewUser($jmeno, $prijmeni, $prezdivka, $telefon, $email);
+}
+
+function addBorrow($data, $db) {
+    $dilo_id = $data->dilo_id;
+    $pujcujici_id = $data->pujcujici_id;
+    $stav_id = $data->stav_id;
+    $dat_zapujceni = $data->dat_zapujceni;
+    $dat_vraceni_plan = $data->dat_vraceni_plan;
+
+    $db->addNewBorrow($dilo_id, $pujcujici_id, $stav_id, $dat_zapujceni, $dat_vraceni_plan);
+}
+
+function addDilo($data, $db) {
+    $nazev = $data->nazev;
+    $autor = $data->autor;
+    $nosic_id = $data->nosic_id;
+    $dat_porizeni = $data->dat_porizeni;
+    $delka = $data->delka;
+    $popis = $data->popis;
+
+    $db->addNewDilo($nazev, $autor, $nosic_id, $dat_porizeni, $delka, $popis);
 }
 
 /*---------------------PUT functions---------------------- */
@@ -130,7 +156,9 @@ function updateDatabase($keyName, $data, $db) {
     if ($keyName == 'users') {
         updateUser($data, $db);
     } elseif ($keyName == 'borrows') {
-        // updateBorrow($data, $db);
+        updateBorrow($data, $db);
+    } else if ($keyName == 'dilo') {
+        updateDilo($data, $db);
     }
 }
 
@@ -145,9 +173,35 @@ function updateUser($data, $db) {
     $db->updateUser($pujcujici_id, $jmeno, $prijmeni, $prezdivka, $telefon, $email);
 }
 
+function updateBorrow($data, $db) {
+    $vypujcka_id = $data->vypujcka_id;
+    $dilo_id = $data->dilo_id;
+    $pujcujici_id = $data->pujcujici_id;
+    $stav_id = $data->stav_id;
+    $dat_zapujceni = $data->dat_zapujceni;
+    $dat_vraceni_plan = $data->dat_vraceni_plan;
+    $dat_vraceni = $data->dat_vraceni;
+
+    $db->updateBorrow($vypujcka_id, $dilo_id, $pujcujici_id, $stav_id, $dat_zapujceni, $dat_vraceni_plan, $dat_vraceni);
+}
+
+function updateDilo($data, $db) {
+    $dilo_id = $data->dilo_id;
+    $nazev = $data->nazev;
+    $autor = $data->autor;
+    $nosic_id = $data->nosic_id;
+    $dat_porizeni = $data->dat_porizeni;
+    $delka = $data->delka;
+    $popis = $data->popis;
+    
+    $db->updateDilo($dilo_id, $nazev, $autor, $nosic_id, $dat_porizeni, $delka, $popis);
+}
+
 /*---------------------DELETE functions---------------------- */
-function deleteFromDatabase ($keyName, $userId, $db) {
+function deleteFromDatabase ($keyName, $id, $db) {
     if ($keyName == 'users') {
-        $db->deleteFromTable(TABLE_PUJCUJICI, "`pujcujici`.`pujcujici_id`='$userId'");
+        $db->deleteFromTable(TABLE_PUJCUJICI, "`pujcujici`.`pujcujici_id`='$id'");
+    } else if ($keyName == 'dilo') {
+        $db->deleteFromTable(TABLE_DILO, "`dilo`.`dilo_id`='$id'");
     }
 }

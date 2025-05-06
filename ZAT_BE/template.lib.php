@@ -5,7 +5,7 @@ function createDiloTemplate($dbData)
     foreach ($dbData as $data) {
         $jsonData[] = array(
             'dilo_id' => $data['dilo_id'],
-            'nosic_id' => $data['typ_nosice_id'],
+            'nosic_id' => $data['nosic_id'],
             'nazev' => $data['nazev'],
             'autor' => $data['autor'],
             'dat_porizeni' => $data['dat_porizeni'],
@@ -38,15 +38,15 @@ function createBorrowsTemplate($dbData) {
     foreach ($dbData as $data) {
         $jsonData[] = array(
             'vypujcka_id' => $data['vypujcka_id'],
-            'polozka_id' => $data['polozka_id'],
-            'objednava_pujcujici_id' => $data['objednava_pujcujici_id'],
-            'resi_pujcujici_id' => $data['resi_pujcujici_id'],
+            'dilo_id' => $data['dilo_id'],
+            'pujcujici_id' => $data['pujcujici_id'],
+            'nosic_id' => $data['nosic_id'],
             'stav_id' => $data['stav_id'],
+            'nazev' => $data['nazev'],
+            'prezdivka' => $data['prezdivka'],
             'dat_zapujceni' => $data['dat_zapujceni'],
-            'dat_navraceni' => $data['dat_navraceni_plan'],
-            'dat_vraceno' => $data['dat_navraceni'],
-            'cena_zalohy' => $data['cena_zalohy'],
-            'cena_vypujcky' => $data['cena_vypujcky']
+            'dat_vraceni_plan' => $data['dat_vraceni_plan'],
+            'dat_vraceni' => $data['dat_vraceni']
         );
     }
     return $jsonData;
@@ -80,8 +80,8 @@ function createNosicTypeTemplate($dbData) {
     $jsonData = array();
     foreach ($dbData as $data) {
         $jsonData[] = array (
-            'nosic_id' => $data['typ_nosice_id'],
-            'nazev' => $data['nazev_typu_nosice']
+            'nosic_id' => $data['nosic_id'],
+            'nazev' => $data['nazev_nosice']
         );
     }
     return $jsonData;

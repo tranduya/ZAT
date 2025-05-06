@@ -129,35 +129,6 @@ class MyDatabase
         return ($obj != null);
     }
 
-    /**
-     * Spoji 2 pole do jednoho dle predaneho id
-     * 
-     * @param $array1 Prvni pole
-     * @param $array2 Druhe pole
-     * @param $idField Podle ceho to ma byt spojovano
-     */
-    public function mergeArrays($array1, $array2, $idField)
-    {
-        $mergedArray = array();
-
-        foreach ($array1 as $item) {
-            $id = $item[$idField];
-            $mergedArray[$id] = $item;
-        }
-
-        foreach ($array2 as $item) {
-            $id = $item[$idField];
-            if (array_key_exists($id, $mergedArray)) {
-                // Merge the data based on the common id
-                $mergedArray[$id] = array_merge($mergedArray[$id], $item);
-            } else {
-                continue;
-            }
-        }
-
-        return array_values($mergedArray);
-    }
-
 
     ///////////////////  KONEC: Obecne funkce  ////////////////////////////////////////////
 
@@ -203,11 +174,26 @@ class MyDatabase
     }
 
     public function getDilo($diloId) {
-        print("doslo to");
-        $fromStatement = "*";
+        $fromStatement = "dilo_id, nosic_id, nazev, autor, dat_porizeni, delka, popis";
         $whereStatement = "dilo`.`dilo_id`= $diloId";
         return $this->selectFromTable(TABLE_DILO, $fromStatement, $whereStatement);
     }
+
+    public function addNewDilo(string $nazev, string $autor, int $nosic_id, string $dat_porizeni,
+     string $delka, string $popis) {
+        $insertStatement = "nosic_id, nazev, autor, dat_porizeni, delka, popis";
+        $insertValues = "'$nosic_id', '$nazev', '$autor', '$dat_porizeni', '$delka', '$popis'";
+        return $this->insertIntoTable(TABLE_DILO, $insertStatement, $insertValues);
+    }
+
+    public function updateDilo(int $dilo_id, string $nazev, string $autor, int $nosic_id,
+     string $dat_porizeni, string $delka, string $popis) {
+        $updateStatementWithValues = "`nosic_id`='$nosic_id', `nazev`='$nazev', `autor`='$autor',
+        `dat_porizeni`='$dat_porizeni', `delka`='$delka', `popis`='$popis'";
+        $whereStatement = "`dilo`.`dilo_id`=$dilo_id";
+
+        return $this->updateInTable(TABLE_DILO, $updateStatementWithValues, $whereStatement);
+     }
 
     // ------------------------------------------------------------------------------
     public function getNosicTypes() {
@@ -221,15 +207,27 @@ class MyDatabase
     }
     
     // ------------------------------------------------------------------------------
-    public function getBorrowsBasicInfo($diloId) {
-        $fromStatement = "
-        vypujcka.vypujcka_id, 
-        vypujcka.stav_id, 
-        vypujcka.dat_vraceni_plan,
-        pujcujici.prezdivka
-    ";
+    public function getAllBorrows() {
+        $fromStatement = "v.vypujcka_id, v.stav_id, v.dat_zapujceni, v.dat_vraceni_plan, v.dat_vraceni,
+            v.dilo_id, v.pujcujici_id, d.nazev, d.nosic_id, p.prezdivka";
+        $tableName = "zat.vypujcka v JOIN zat.dilo d ON v.dilo_id = d.dilo_id JOIN
+            zat.pujcujici p ON v.pujcujici_id = p.pujcujici_id";
 
-    $whereStatement = "vypujcka.dilo_id = " . intval($diloId) . " AND vypujcka.stav_id <> 4";
+        return $this->selectFromTable($tableName, $fromStatement);
+    }
+
+    public function getBorrow(int $vypujckaId) {
+        $fromStatement = "*";
+        $whereStatement = "`vypujcka.`vypujcka_id`=$vypujckaId";
+
+        return $this->selectFromTable(TABLE_VYPUJCKA, $fromStatement, $whereStatement);
+    }
+
+    public function getBorrowsBasicInfo($diloId) {
+        $fromStatement = "vypujcka.vypujcka_id, vypujcka.stav_id, vypujcka.dat_vraceni_plan,
+        pujcujici.prezdivka";
+
+    $whereStatement = "vypujcka.dilo_id = " . intval($diloId) . " AND vypujcka.stav_id = 1";
 
     return $this->selectFromTable(
         "vypujcka 
@@ -237,6 +235,29 @@ class MyDatabase
         $fromStatement,
         $whereStatement
     );
+    }
+
+    public function addNewBorrow(int $dilo_id, int $pujcujici_id, int $stav_id, string $dat_zapujceni, string $dat_vraceni_plan) {
+        $insertStatement = "dilo_id, pujcujici_id, stav_id, dat_zapujceni, dat_vraceni_plan";
+        $insertValues = "'$dilo_id', '$pujcujici_id', '$stav_id', '$dat_zapujceni', '$dat_vraceni_plan'";
+
+        return $this->insertIntoTable(TABLE_VYPUJCKA, $insertStatement, $insertValues);
+    }
+
+    public function updateBorrow(int $vypujcka_id, int $dilo_id, int $pujcujici_id, int $stav_id, string $dat_zapujceni,
+        string $dat_vraceni_plan, string|null $dat_vraceni) {
+        if ($dat_vraceni != null) {
+            $updateStatementWithValues = "`dilo_id`='$dilo_id', `pujcujici_id`='$pujcujici_id', `stav_id`='$stav_id',
+            `dat_zapujceni`='$dat_zapujceni', `dat_vraceni_plan`='$dat_vraceni_plan', `dat_vraceni`='$dat_vraceni'";
+        } else {
+            $updateStatementWithValues = "`dilo_id`='$dilo_id', `pujcujici_id`='$pujcujici_id', `stav_id`='$stav_id',
+            `dat_zapujceni`='$dat_zapujceni', `dat_vraceni_plan`='$dat_vraceni_plan', `dat_vraceni`=null";
+        }
+
+
+        $whereStatement = "`vypujcka`.`vypujcka_id`=$vypujcka_id";
+
+        return $this->updateInTable(TABLE_VYPUJCKA, $updateStatementWithValues, $whereStatement);
     }
 
 
